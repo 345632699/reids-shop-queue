@@ -9,7 +9,6 @@ if ($mywatchkey < $rob_total) {
 	$redis->watch('mywatchkey');
 	//redis 事务开始
 	$redis->multi();
-	sleep(5);
 	//开始业务
 	$user_id = "user_id_".mt_rand(1,9999);
 	$redis->hSet("mywatchlist",$user_id,date('H-m-d H:i:s'));

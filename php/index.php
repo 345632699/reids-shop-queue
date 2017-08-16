@@ -2,6 +2,7 @@
 header("content-type:text/html;charset=utf-8");  
 $redis = new redis();
 $result = $redis->connect('127.0.0.1', 6379);  
+$auth = $redis->auth('root');
 $mywatchkey = $redis->get('mywatchkey');
 $rob_total = 100;
 if ($mywatchkey < $rob_total) {
@@ -25,4 +26,20 @@ if ($mywatchkey < $rob_total) {
 		echo "手气不好，再抢购";exit();
 	}
 
+}else{
+	$mywatchlist = $redis->hGetAll('mywatchlist');
+ 	echo "剩余数量：".($rob_total-$mywatchkey-1)."<br/>";  
+    echo "用户列表：<pre>"; 
+    echo "<table style='text-align:center;'>";
+    echo "<thead><th>number</th><th>user</th><th>time</th></thead>";
+    $i = 1;
+    foreach ($mywatchlist as $key => $value) {
+    	# code...
+    	$html = '';
+    	$html = "<tr><td>".$i."</td><td>".$key."</td><td>".$value."</td></tr>";
+    	echo $html;
+    	$i++;
+    }
+    echo "</table>";
+    
 }
